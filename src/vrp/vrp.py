@@ -3,6 +3,8 @@ import numpy as np
 
 from src.base import Vehicle, Node
 from .savings import savings
+from .relocate import Relocate
+from .helpers import normalize_route, clean_empty_routes
 
 
 class VRP:
@@ -33,6 +35,12 @@ class VRP:
         route = self.build_giant_route()
         route = savings(route, self.vehicle)
 
+        route = normalize_route(route)
+
+        r = Relocate(self.vehicle)
+        route = r.improve(route)
+
+        return clean_empty_routes(route)
 
     def build_giant_route(self):
         return [(self.depot, n, self.depot) for n in self.demands]

@@ -1,6 +1,7 @@
 #  Copyright (c) 2020. Lars Hackstein, Holger Schneider
 import numpy as np
 
+
 class Vehicle:
     """
     A Container encapsulates all necessary parameters like loading capacity, cost parameters or maximal route duration.
@@ -18,3 +19,6 @@ class Vehicle:
 
     def check(self, tour):
         return np.sum(n.demand for n in tour) <= self.restrictions['capacity']
+
+    def evaluate(self, tour):
+        return np.sum(self.metric(tour[i], tour[i+1]) for i in range(len(tour)-1))
